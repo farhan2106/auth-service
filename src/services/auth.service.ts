@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import config from 'config';
 import jwt from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
-import { CreateUserDto } from '@dtos/users.dto';
+import { CreateUserDto, LoginDto } from '@dtos/users.dto';
 import { UserEntity } from '@entity/users.entity';
 import HttpException from '@exceptions/HttpException';
 import { DataStoredInToken, TokenData } from '@interfaces/auth.interface';
@@ -24,11 +24,11 @@ class AuthService {
     return createUserData;
   }
 
-  public async login(userData: CreateUserDto): Promise<{ cookie: string; findUser: User }> {
+  public async login(userData: LoginDto): Promise<{ cookie: string; findUser: User }> {
     if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
 
     const userRepository = getRepository(this.users);
-    const findUser: User = await userRepository.findOne({ where: { email: userData.email } });
+    const findUser = await userRepository.findOne({ where: { email: userData.email } });
     if (!findUser) throw new HttpException(409, `You're email ${userData.email} not found`);
 
     const isPasswordMatching: boolean = await bcrypt.compare(userData.password, findUser.password);
@@ -50,8 +50,8 @@ class AuthService {
     return findUser;
   }
 
-  public createToken(user: User): TokenData {
-    const dataStoredInToken: DataStoredInToken = { id: user.id };
+  public createToken(user: UserEntity): TokenData {
+    const dataStoredInToken: DataStoredInToken = { id: user.id, roles: user.roles.map(r => r.role) };
     const secretKey: string = config.get('secretKey');
     const expiresIn: number = 60 * 60;
 

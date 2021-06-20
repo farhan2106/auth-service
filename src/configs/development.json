@@ -1,9 +1,9 @@
 {
     "env": "development",
     "dbConfig": {
-        "host": "mariadb",
-        "user": "auth-service-user",
-        "password": "auth-service-user-password",
+        "host": "localhost",
+        "user": "root",
+        "password": "root",
         "database": "auth-service"
     },
     "secretKey": "secretKey"

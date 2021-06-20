@@ -74,7 +74,7 @@ describe('Testing Auth', () => {
 
       return request(app.getServer())
         .post(`/api/${authRoute.path}logout`)
-        // .expect('Set-Cookie', /^Authorization=\;/); // ?
+        .expect('Set-Cookie', /^Authorization=\;/);
     });
   });
 });

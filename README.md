@@ -1,7 +1,9 @@
 # Auth Service
 
 ## Running the service
-docker-compose up
+1. modify `src/configs` to taste
+2. Start local mariadb & create db
+2. docker-compose up or `npm run dev`
 
 ## Integration Test
 1. Start local mariadb

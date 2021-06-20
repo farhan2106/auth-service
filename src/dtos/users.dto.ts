@@ -11,6 +11,14 @@ export class CreateUserDto {
   public password: string;
 }
 
+export class LoginDto {
+  @IsEmail()
+  public email: string;
+
+  @IsString()
+  public password: string;
+}
+
 export class SetUserRolesDto {
   @IsArray()
   public roles: string[];
